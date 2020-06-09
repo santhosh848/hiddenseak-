@@ -1,0 +1,78 @@
+<html>
+  
+ <head>
+     <title></title>
+     <script 
+         src="http://ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js" 
+         type="text/javascript">
+     </script>
+     <script
+         type="text/javascript"
+         src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js">
+     </script> 
+ </head>
+ <body>
+     <script type="text/javascript">
+  
+         $(document).ready(function () {
+  
+  
+             var hostweburl = "http://siteURL/";
+  
+              
+             var scriptbase = hostweburl + "/_layouts/15/";
+  
+  
+             $.getScript(scriptbase + "SP.Runtime.js",
+                 function () {
+                     $.getScript(scriptbase + "SP.js", execOperation);
+                 }
+             );
+         });
+  
+  
+         function execOperation() {
+  
+              
+             AddWebSiteProperties("http://siteURL");
+  
+         }
+         function AddWebSiteProperties(siteUrl) {
+  
+             var clientContext = new SP.ClientContext(siteUrl);
+  
+             oWebsite = clientContext.get_web();
+             alert(oWebsite);
+             
+             clientContext.load(oWebsite);
+             alert("Load");
+             var props = oWebsite.get_allProperties();
+  
+             props.set_item("Myproperty", "PropertyValue");
+             oWebsite.update();
+             clientContext.load(oWebsite);
+  
+             clientContext.executeQueryAsync(
+                 Function.createDelegate(this, this.onQuerySucceeded2),
+                 Function.createDelegate(this, this.onQueryFailed2)
+              );
+         }
+  
+  
+  
+  
+  
+  
+         function onQuerySucceeded2(sender, args) {
+             alert("Success");         }
+  
+         function onQueryFailed2(sender, args) {
+             alert("Failed");
+             alert('Request failed. ' + args.get_message() +
+                 '\n' + args.get_stackTrace());
+         }
+  
+ </script>
+     Hi there
+ </body>
+ </html>

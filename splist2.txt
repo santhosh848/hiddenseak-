@@ -1,0 +1,4 @@
+list.Fields.Add("Foo", SPFieldType.Text, true):
+list.View[0].ViewFields.Add("Foo");
+list.View[0].Update();
+list.Update();
